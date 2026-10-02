@@ -2,6 +2,8 @@ package br.com.patrimonio.janela;
 
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -16,11 +18,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import br.com.patrimonio.dao.DAOCurso;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import br.com.patrimonio.dao.DAOLocais;
 
-public class ListarCursos extends JFrame {
+public class ListarLocais extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -35,7 +35,7 @@ public class ListarCursos extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListarCursos frame = new ListarCursos();
+					ListarLocais frame = new ListarLocais();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,9 +47,9 @@ public class ListarCursos extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ListarCursos() {
+	public ListarLocais() {
 		setResizable(false);
-		setTitle("SURVEY_PROGRAM_LISTAR_CURSOS");
+		setTitle("SURVEY_PROGRAM_LISTAR_LOCAIS");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 870, 563);
 		contentPane = new JPanel();
@@ -59,12 +59,12 @@ public class ListarCursos extends JFrame {
 		
 		
 		
-		JLabel lblNewLabel = new JLabel("Listar Cursos");
+		JLabel lblNewLabel = new JLabel("Listar Locais");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
 		lblNewLabel.setBounds(10, 11, 180, 48);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lbllbl = new JLabel("Digite o código do curso:");
+		JLabel lbllbl = new JLabel("Digite o código do local:");
 		lbllbl.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lbllbl.setBounds(10, 110, 167, 19);
 		contentPane.add(lbllbl);
@@ -86,10 +86,10 @@ public class ListarCursos extends JFrame {
 				//AQUI AQUI AQUI
 				String cx = txtIdCurso.getText();
 				if(cx.equals("") || cx==null) {
-					carregarCursos(0);
+					carregarLocais(0);
 				}
 				else {
-					carregarCursos(Integer.parseInt(cx));
+					carregarLocais(Integer.parseInt(cx));
 				}
 				
 			}
@@ -98,19 +98,19 @@ public class ListarCursos extends JFrame {
 		btnRealizarBusca.setBounds(580, 110, 41, 29);
 		contentPane.add(btnRealizarBusca);
 			
-		carregarCursos(0);
+		carregarLocais(0);
 		
 		
 	}
 	
-	public void carregarCursos(Integer id) {
+	public void carregarLocais(Integer id) {
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 140, 834, 358);
 		contentPane.add(scrollPane);
 		
 		//Montar o cabeçalho da tabela
-		String colunas[] = {"Id","Nome do Curso","Sigla do Curso","Criado Por","Criado Em"};
+		String colunas[] = {"Id","Nome do local","Descrição","Criado Por","Criado Em"};
 		
 		//Vamos criar um modelo de dados para apresentar as colunas e os dados do banco
 		//de dadaos na nossa JTable. O Modelo de dados organiza as informações que serão apresentadas
@@ -119,21 +119,21 @@ public class ListarCursos extends JFrame {
 		
 		
 		//Instância da classe DAOCurso
-		DAOCurso dc = new DAOCurso();
+		DAOLocais dc = new DAOLocais();
 		//Receber a lista de todos os cursos do banco de dados em uma lista
 		
-		List<br.com.patrimonio.pojo.Cursos> lc;
-		br.com.patrimonio.pojo.Cursos cs;
+		List<br.com.patrimonio.pojo.Locais> lc;
+		br.com.patrimonio.pojo.Locais cs;
 		
 		
 		if( id == 0) {
 			lc = dc.listar();
 			
-			for(br.com.patrimonio.pojo.Cursos cr : lc) {
+			for(br.com.patrimonio.pojo.Locais cr : lc) {
 				Object[] dados = {
 						cr.getId(),
-						cr.getNome(),
-						cr.getSigla(),
+						cr.getLocal(),
+						cr.getDescricao(),
 						cr.getCriado_por(),
 						cr.getCriado_em()
 						
@@ -147,8 +147,8 @@ public class ListarCursos extends JFrame {
 			
 			Object[] dados = {
 					cs.getId(),
-					cs.getNome(),
-					cs.getSigla(),
+					cs.getLocal(),
+					cs.getDescricao(),
 					cs.getCriado_por(),
 					cs.getCriado_em()
 			};

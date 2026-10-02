@@ -4,6 +4,7 @@
 //import java.util.List;
 //
 //import br.com.patrimonio.pojo.Baixas;
+//import br.com.patrimonio.pojo.TipoBaixa;
 //
 //public class DAOBaixas extends Conexao implements CRUD<Baixas> {
 //
@@ -53,25 +54,63 @@
 //
 //				pst = con.prepareStatement(baixaInsert);
 //
+//				// =====================================================
+//				// PATRIMÔNIO
+//				// =====================================================
+//
 //				pst.setInt(
 //						1,
 //						obj.getPatrimonio_id()
 //				);
+//
+//				// =====================================================
+//				// USUÁRIO
+//				// =====================================================
 //
 //				pst.setInt(
 //						2,
 //						obj.getUsuario_registro_id()
 //				);
 //
+//				// =====================================================
+//				// TIPO DE BAIXA
+//				// =====================================================
+//
+//				String tipoBaixa =
+//						obj.getTipo_baixa().name();
+//
+//				/*
+//				 * O Java não permite "/" em identificadores de enum.
+//				 *
+//				 * Java:
+//				 * FurtoRoubo
+//				 *
+//				 * Banco:
+//				 * Furto/Roubo
+//				 */
+//
+//				if (obj.getTipo_baixa() == TipoBaixa.FurtoRoubo) {
+//
+//					tipoBaixa = "Furto/Roubo";
+//				}
+//
 //				pst.setString(
 //						3,
-//						obj.getTipo_baixa().toString()
+//						tipoBaixa
 //				);
+//
+//				// =====================================================
+//				// MOTIVO
+//				// =====================================================
 //
 //				pst.setString(
 //						4,
 //						obj.getMotivo().trim()
 //				);
+//
+//				// =====================================================
+//				// VALOR RECUPERADO
+//				// =====================================================
 //
 //				if (obj.getValor_recuperado() != null) {
 //
@@ -88,6 +127,10 @@
 //					);
 //				}
 //
+//				// =====================================================
+//				// DOCUMENTO COMPROBATÓRIO
+//				// =====================================================
+//
 //				if (obj.getDocumento_comprobatorio() != null
 //						&& !obj.getDocumento_comprobatorio().trim().isEmpty()) {
 //
@@ -103,6 +146,10 @@
 //							java.sql.Types.VARCHAR
 //					);
 //				}
+//
+//				// =====================================================
+//				// DATA DA BAIXA
+//				// =====================================================
 //
 //				if (obj.getData_baixa() != null) {
 //
@@ -121,6 +168,10 @@
 //					);
 //				}
 //
+//				// =====================================================
+//				// EXECUTA INSERT
+//				// =====================================================
+//
 //				int i =
 //						pst.executeUpdate();
 //
@@ -128,7 +179,6 @@
 //
 //					msg =
 //							"Não foi possível cadastrar a baixa.";
-//
 //				}
 //
 //			} else {
@@ -149,24 +199,28 @@
 //
 //	@Override
 //	public Boolean atualizar(Baixas obj) {
+//
 //		// TODO Auto-generated method stub
 //		return null;
 //	}
 //
 //	@Override
 //	public String deletar(Integer id) {
+//
 //		// TODO Auto-generated method stub
 //		return null;
 //	}
 //
 //	@Override
 //	public List<Baixas> listar() {
+//
 //		// TODO Auto-generated method stub
 //		return null;
 //	}
 //
 //	@Override
 //	public Baixas listarID(Integer ID) {
+//
 //		// TODO Auto-generated method stub
 //		return null;
 //	}

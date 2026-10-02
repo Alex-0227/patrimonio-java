@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.patrimonio.pojo.Cursos;
 import br.com.patrimonio.pojo.Perfil;
 import br.com.patrimonio.pojo.Usuarios;
 
@@ -63,9 +62,73 @@ public class DAOUsuario extends Conexao implements IUsuario<Usuarios>{
 	}
 
 	@Override
-	public Boolean atualizar(Usuarios obj) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Usuarios> listar() {
+		
+		List<Usuarios> lista = new ArrayList<Usuarios>();
+		try {
+			//Abrir o banco de dados
+			if(abrir()) {
+				String sql = "SELECT * FROM usuarios ";
+				//preparar a consulta para ser executada
+				pst = con.prepareStatement(sql);
+				
+				//Executar a consulta com o comando executeQuery, assim teremos
+				//o comando Select sendo executado. O resultado da consulta é 
+				//guardado em uma variável do tipo ResultSet(rs). Sempre que você
+				//tiver uma consulta SELECT o retorno desta consulta deve ficar
+				//em um ResultSet
+				rs = pst.executeQuery();
+				
+				//O comando next() faz o cursor se movimentar para adiante
+				//Dentro da tabela, quando há dados. Se não houver dados
+				//O cursos não se movimenta e retorna falso, indicando
+				//Que os dados da tabela acabaram.
+				while(rs.next()) {
+					//Todas as vezes que o laço while "roda", significa que o
+					//comando next executou e assim foi para a próxima linha
+					//E trazendo os dados dessa linha.
+					//Para organizar e guardar os dados dos usuarios, criamos
+					//um novo usuario da camada POJO e passamos todos os dados retornados
+					//do RS para cada campo do usuario.
+					//Depois adicionamos este usuário a lista de usuarios selecionados.
+					Usuarios us = new Usuarios();
+					us.setId(rs.getInt(1));
+					us.setNome(rs.getString(2));
+					us.setEmail(rs.getString(3));
+					
+					us.setPerfil(
+						    Perfil.valueOf(
+						        rs.getString(5).toLowerCase()
+						    )
+						);
+
+					
+					us.setAtivo(rs.getBoolean(6));
+					us.setCriado_em(rs.getDate(7));
+					us.setAtualizado_em(rs.getDate(8));
+					
+					lista.add(us);
+
+				}
+			}
+			else {
+				System.out.println("Erro ao tentar abrir a conexão");
+			}
+		}
+		catch(SQLException se) {
+			System.out.print("Erro ao tentar executar a consulta. Mensagem:"+se.getMessage());
+		}
+		catch(Exception e) {
+			System.out.println("Erro inesperado, Mensagem:"+e.getMessage());		
+			}
+		
+		finally {
+			fechar();
+		}
+		
+		return lista;
+		
+		
 	}
 
 	@Override
@@ -74,11 +137,6 @@ public class DAOUsuario extends Conexao implements IUsuario<Usuarios>{
 		return null;
 	}
 
-	@Override
-	public List<Usuarios> listar() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public Usuarios listarID(Integer ID) {
@@ -103,9 +161,11 @@ public class DAOUsuario extends Conexao implements IUsuario<Usuarios>{
 					
 					us.setPerfil(
 						    Perfil.valueOf(
-						        rs.getString(5)
+						        rs.getString(5).toLowerCase()
 						    )
 						);
+
+
 					
 					us.setAtivo(rs.getBoolean(6));
 					us.setCriado_em(rs.getDate(7));
@@ -177,16 +237,23 @@ public class DAOUsuario extends Conexao implements IUsuario<Usuarios>{
 					//do RS para cada campo do usuario.
 					//Depois adicionamos este usuário a lista de usuarios selecionados.
 					Usuarios us = new Usuarios();
+
 					us.setId(rs.getInt(1));
 					us.setNome(rs.getString(2));
 					us.setEmail(rs.getString(3));
-					
+
+					us.setPerfil(
+					    Perfil.valueOf(
+					        rs.getString(5).toLowerCase()
+					    )
+					);
+
 					us.setAtivo(rs.getBoolean(6));
 					us.setCriado_em(rs.getDate(7));
 					us.setAtualizado_em(rs.getDate(8));
-					
+
 					lista.add(us);
-					
+
 				}
 			}
 			else {
@@ -207,6 +274,12 @@ public class DAOUsuario extends Conexao implements IUsuario<Usuarios>{
 		return lista;
 
 		
+	}
+
+	@Override
+	public Boolean atualizar(Usuarios obj) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

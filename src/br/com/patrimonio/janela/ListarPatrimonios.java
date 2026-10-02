@@ -2,6 +2,8 @@ package br.com.patrimonio.janela;
 
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -16,11 +18,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import br.com.patrimonio.dao.DAOCurso;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import br.com.patrimonio.dao.DAOPatrimonios;
 
-public class ListarCursos extends JFrame {
+public class ListarPatrimonios extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -35,7 +35,7 @@ public class ListarCursos extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListarCursos frame = new ListarCursos();
+					ListarPatrimonios frame = new ListarPatrimonios();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,11 +47,11 @@ public class ListarCursos extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ListarCursos() {
+	public ListarPatrimonios() {
 		setResizable(false);
-		setTitle("SURVEY_PROGRAM_LISTAR_CURSOS");
+		setTitle("SURVEY_PROGRAM_LISTAR_PATRIMONIOS");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 870, 563);
+		setBounds(100, 100, 1134, 563);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -59,22 +59,22 @@ public class ListarCursos extends JFrame {
 		
 		
 		
-		JLabel lblNewLabel = new JLabel("Listar Cursos");
+		JLabel lblNewLabel = new JLabel("Listar Patrimonios");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
-		lblNewLabel.setBounds(10, 11, 180, 48);
+		lblNewLabel.setBounds(10, 11, 301, 48);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lbllbl = new JLabel("Digite o código do curso:");
+		JLabel lbllbl = new JLabel("Digite o código do Patrimonio:");
 		lbllbl.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lbllbl.setBounds(10, 110, 167, 19);
+		lbllbl.setBounds(10, 110, 199, 19);
 		contentPane.add(lbllbl);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(10, 58, 834, 14);
+		separator.setBounds(10, 58, 1098, 14);
 		contentPane.add(separator);
 		
 		txtIdCurso = new JTextField();
-		txtIdCurso.setBounds(175, 111, 395, 20);
+		txtIdCurso.setBounds(219, 111, 395, 20);
 		contentPane.add(txtIdCurso);
 		txtIdCurso.setColumns(10);
 		
@@ -86,31 +86,31 @@ public class ListarCursos extends JFrame {
 				//AQUI AQUI AQUI
 				String cx = txtIdCurso.getText();
 				if(cx.equals("") || cx==null) {
-					carregarCursos(0);
+					carregarPatrimonios(0);
 				}
 				else {
-					carregarCursos(Integer.parseInt(cx));
+					carregarPatrimonios(Integer.parseInt(cx));
 				}
 				
 			}
 		});
 		btnRealizarBusca.setIcon(new ImageIcon(ListarCursos.class.getResource("/br/com/patrimonio/imagens/Icons/search.png")));
-		btnRealizarBusca.setBounds(580, 110, 41, 29);
+		btnRealizarBusca.setBounds(624, 110, 41, 29);
 		contentPane.add(btnRealizarBusca);
 			
-		carregarCursos(0);
+		carregarPatrimonios(0);
 		
 		
 	}
 	
-	public void carregarCursos(Integer id) {
+	public void carregarPatrimonios(Integer id) {
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 140, 834, 358);
+		scrollPane.setBounds(10, 140, 1098, 358);
 		contentPane.add(scrollPane);
 		
 		//Montar o cabeçalho da tabela
-		String colunas[] = {"Id","Nome do Curso","Sigla do Curso","Criado Por","Criado Em"};
+		String colunas[] = {"Id","Nº Tombamento","Nome","Descrição","ID do Curso","ID do Local" , "ID da Categoria","Status", "Valor Aquisição", "Data Aquisição","Atualizado por", "Criado Por", "Atualizado em", "Criado Em" };
 		
 		//Vamos criar um modelo de dados para apresentar as colunas e os dados do banco
 		//de dadaos na nossa JTable. O Modelo de dados organiza as informações que serão apresentadas
@@ -119,22 +119,31 @@ public class ListarCursos extends JFrame {
 		
 		
 		//Instância da classe DAOCurso
-		DAOCurso dc = new DAOCurso();
+		DAOPatrimonios dc = new DAOPatrimonios();
 		//Receber a lista de todos os cursos do banco de dados em uma lista
 		
-		List<br.com.patrimonio.pojo.Cursos> lc;
-		br.com.patrimonio.pojo.Cursos cs;
+		List<br.com.patrimonio.pojo.Patrimonio> lc;
+		br.com.patrimonio.pojo.Patrimonio cs;
 		
 		
 		if( id == 0) {
 			lc = dc.listar();
 			
-			for(br.com.patrimonio.pojo.Cursos cr : lc) {
+			for(br.com.patrimonio.pojo.Patrimonio cr : lc) {
 				Object[] dados = {
 						cr.getId(),
+						cr.getNumero_tombamento(),
 						cr.getNome(),
-						cr.getSigla(),
+						cr.getDescricao(),
+						cr.getCurso_id(),
+						cr.getLocal_id(),
+						cr.getCategoria_id(),
+						cr.getStatus(),
+						cr.getValor_aquisicao(),
+						cr.getData_aquisicao(),
+						cr.getAtualizado_por(),
 						cr.getCriado_por(),
+						cr.getAtualizado_em(),
 						cr.getCriado_em()
 						
 				};
@@ -147,9 +156,18 @@ public class ListarCursos extends JFrame {
 			
 			Object[] dados = {
 					cs.getId(),
+					cs.getNumero_tombamento(),
 					cs.getNome(),
-					cs.getSigla(),
+					cs.getDescricao(),
+					cs.getCurso_id(),
+					cs.getLocal_id(),
+					cs.getCategoria_id(),
+					cs.getStatus(),
+					cs.getValor_aquisicao(),
+					cs.getData_aquisicao(),
+					cs.getAtualizado_por(),
 					cs.getCriado_por(),
+					cs.getAtualizado_em(),
 					cs.getCriado_em()
 			};
 			model.addRow(dados);

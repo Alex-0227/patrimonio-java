@@ -24,7 +24,7 @@ public class ListarUsuarios extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTable tableCursos;
+	private JTable tableUsuarios;
 	private JTextField txtIdUsuarios;
 	private JScrollPane scrollPane;
 
@@ -49,7 +49,7 @@ public class ListarUsuarios extends JFrame {
 	 */
 	public ListarUsuarios() {
 		setResizable(false);
-		setTitle("SURVEY_PROGRAM_LISTAR_CURSOS");
+		setTitle("SURVEY_PROGRAM_LISTAR_USUARIOS");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 870, 563);
 		contentPane = new JPanel();
@@ -61,12 +61,12 @@ public class ListarUsuarios extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("Listar Usuarios");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
-		lblNewLabel.setBounds(10, 11, 180, 48);
+		lblNewLabel.setBounds(10, 11, 496, 48);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lbllbl = new JLabel("Digite o código do Usuario:");
 		lbllbl.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lbllbl.setBounds(10, 110, 167, 19);
+		lbllbl.setBounds(10, 110, 202, 19);
 		contentPane.add(lbllbl);
 		
 		JSeparator separator = new JSeparator();
@@ -74,7 +74,7 @@ public class ListarUsuarios extends JFrame {
 		contentPane.add(separator);
 		
 		txtIdUsuarios = new JTextField();
-		txtIdUsuarios.setBounds(175, 111, 395, 20);
+		txtIdUsuarios.setBounds(200, 111, 395, 20);
 		contentPane.add(txtIdUsuarios);
 		txtIdUsuarios.setColumns(10);
 		
@@ -95,7 +95,7 @@ public class ListarUsuarios extends JFrame {
 			}
 		});
 		btnRealizarBusca.setIcon(new ImageIcon(ListarUsuarios.class.getResource("/br/com/patrimonio/imagens/Icons/search.png")));
-		btnRealizarBusca.setBounds(580, 110, 41, 29);
+		btnRealizarBusca.setBounds(627, 110, 41, 29);
 		contentPane.add(btnRealizarBusca);
 			
 		carregarUsuarios(0);
@@ -110,7 +110,7 @@ public class ListarUsuarios extends JFrame {
 		contentPane.add(scrollPane);
 		
 		//Montar o cabeçalho da tabela
-		String colunas[] = {"Id","Nome do Usuario","E-mail","Pefil","Ativo","Criado Por","Atualizado Em"};
+		String colunas[] = {"Id","Nome do Usuario","E-mail","Pefil","Ativo","Criado Em","Atualizado Em"};
 		
 		//Vamos criar um modelo de dados para apresentar as colunas e os dados do banco
 		//de dadaos na nossa JTable. O Modelo de dados organiza as informações que serão apresentadas
@@ -122,14 +122,14 @@ public class ListarUsuarios extends JFrame {
 		DAOUsuario dc = new DAOUsuario();
 		//Receber a lista de todos os cursos do banco de dados em uma lista
 		
-		List<br.com.patrimonio.pojo.Usuarios> lc;
+		List<br.com.patrimonio.pojo.Usuarios> lu;
 		br.com.patrimonio.pojo.Usuarios cs;
 		
 		
 		if( id == 0) {
-			lc = dc.listar();
+			lu = dc.listar();
 			
-			for(br.com.patrimonio.pojo.Usuarios cr : lc) {
+			for(br.com.patrimonio.pojo.Usuarios cr : lu) {
 				Object[] dados = {
 						cr.getId(),
 						cr.getNome(),
@@ -166,8 +166,8 @@ public class ListarUsuarios extends JFrame {
 		
 		
 		//Adicionar o modelo de dados com colunas a JTable	
-		tableCursos = new JTable(model);
-		scrollPane.setViewportView(tableCursos);
+		tableUsuarios = new JTable(model);
+		scrollPane.setViewportView(tableUsuarios);
 	}
 	
 }

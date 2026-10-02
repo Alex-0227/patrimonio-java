@@ -370,7 +370,7 @@ public class TelaSplash extends JFrame {
 		// INICIALIZAÇÃO DA APLICAÇÃO
 		// ==========================================================
 
-		tocarAudio("StartupApp.wav");
+		tocarAudio("StartupApp2.wav");
 
 		// ==========================================================
 		// ABRE TELA PRINCIPAL

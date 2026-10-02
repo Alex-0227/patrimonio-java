@@ -1,9 +1,12 @@
 package br.com.patrimonio.dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.patrimonio.pojo.Baixas;
+import br.com.patrimonio.pojo.Cursos;
+import br.com.patrimonio.pojo.Status;
 import br.com.patrimonio.pojo.TipoBaixa;
 
 public class DAOBaixas extends Conexao implements CRUD<Baixas> {
@@ -213,15 +216,148 @@ public class DAOBaixas extends Conexao implements CRUD<Baixas> {
 
 	@Override
 	public List<Baixas> listar() {
+		
+		List<Baixas> lista = new ArrayList<Baixas>();
+		try {
+			//Abrir o banco de dados
+			if(abrir()) {
+				String sql = "SELECT * FROM baixas_patrimoniais";
+				//preparar a consulta para ser executada
+				pst = con.prepareStatement(sql);
+				
+				//Executar a consulta com o comando executeQuery, assim teremos
+				//o comando Select sendo executado. O resultado da consulta é 
+				//guardado em uma variável do tipo ResultSet(rs). Sempre que você
+				//tiver uma consulta SELECT o retorno desta consulta deve ficar
+				//em um ResultSet
+				rs = pst.executeQuery();
+				
+				//O comando next() faz o cursor se movimentar para adiante
+				//Dentro da tabela, quando há dados. Se não houver dados
+				//O cursos não se movimenta e retorna falso, indicando
+				//Que os dados da tabela acabaram.
+				while(rs.next()) {
+					//Todas as vezes que o laço while "roda", significa que o
+					//comando next executou e assim foi para a próxima linha
+					//E trazendo os dados dessa linha.
+					//Para organizar e guardar os dados dos usuarios, criamos
+					//um novo usuario da camada POJO e passamos todos os dados retornados
+					//do RS para cada campo do usuario.
+					//Depois adicionamos este usuário a lista de usuarios selecionados.
+					Baixas ba = new Baixas();
+					ba.setId(rs.getInt(1));
+					ba.setPatrimonio_id(rs.getInt(2));
+					ba.setUsuario_registro_id(rs.getInt(3));
+					
+					
+					String tipo_Baixa =
+                            rs.getString("tipo_Baixa");
 
-		// TODO Auto-generated method stub
-		return null;
+                    if (tipo_Baixa != null) {
+
+                        ba.setTipo_baixa(
+                                TipoBaixa.valueOf(tipo_Baixa)
+                        );
+                    }
+					
+					ba.setMotivo(rs.getString(5));
+					ba.setValor_recuperado(rs.getDouble(6));
+					ba.setDocumento_comprobatorio(rs.getString(7));
+					ba.setData_baixa(rs.getDate(8));
+					
+					lista.add(ba);
+				}
+			}
+			else {
+				System.out.println("Erro ao tentar abrir a conexão");
+			}
+		}
+		catch(SQLException se) {
+			System.out.print("Erro ao tentar executar a consulta. Mensagem:"+se.getMessage());
+		}
+		catch(Exception e) {
+			System.out.println("Erro inesperado, Mensagem:"+e.getMessage());		
+			}
+		
+		finally {
+			fechar();
+		}
+		
+		return lista;
+		
+		
 	}
 
 	@Override
 	public Baixas listarID(Integer ID) {
+		
+		Baixas lista = new Baixas();
+		try {
+			//Abrir o banco de dados
+			if(abrir()) {
+				String sql = "SELECT * FROM baixas_patrimoniais WHERE id="+ID;
+				//preparar a consulta para ser executada
+				pst = con.prepareStatement(sql);
+				
+				//Executar a consulta com o comando executeQuery, assim teremos
+				//o comando Select sendo executado. O resultado da consulta é 
+				//guardado em uma variável do tipo ResultSet(rs). Sempre que você
+				//tiver uma consulta SELECT o retorno desta consulta deve ficar
+				//em um ResultSet
+				rs = pst.executeQuery();
+				
+				//O comando next() faz o cursor se movimentar para adiante
+				//Dentro da tabela, quando há dados. Se não houver dados
+				//O cursos não se movimenta e retorna falso, indicando
+				//Que os dados da tabela acabaram.
+				while(rs.next()) {
+					//Todas as vezes que o laço while "roda", significa que o
+					//comando next executou e assim foi para a próxima linha
+					//E trazendo os dados dessa linha.
+					//Para organizar e guardar os dados dos usuarios, criamos
+					//um novo usuario da camada POJO e passamos todos os dados retornados
+					//do RS para cada campo do usuario.
+					//Depois adicionamos este usuário a lista de usuarios selecionados.
+					Baixas ba = new Baixas();
+					ba.setId(rs.getInt(1));
+					ba.setPatrimonio_id(rs.getInt(2));
+					ba.setUsuario_registro_id(rs.getInt(3));
+					
+					String tipo_Baixa =
+                            rs.getString("tipo_Baixa");
 
-		// TODO Auto-generated method stub
-		return null;
+                    if (tipo_Baixa != null) {
+
+                        ba.setTipo_baixa(
+                                TipoBaixa.valueOf(tipo_Baixa)
+                        );
+                    }
+					
+					ba.setMotivo(rs.getString(5));
+					ba.setValor_recuperado(rs.getDouble(6));
+					ba.setDocumento_comprobatorio(rs.getString(7));
+					ba.setData_baixa(rs.getDate(8));
+					
+					lista = ba;
+				}
+			}
+			else {
+				System.out.println("Erro ao tentar abrir a conexão");
+			}
+		}
+		catch(SQLException se) {
+			System.out.print("Erro ao tentar executar a consulta. Mensagem:"+se.getMessage());
+		}
+		catch(Exception e) {
+			System.out.println("Erro inesperado, Mensagem:"+e.getMessage());		
+			}
+		
+		finally {
+			fechar();
+		}
+		
+		return lista;
+		
+		
 	}
 }

@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.patrimonio.pojo.Cursos;
 import br.com.patrimonio.pojo.Patrimonio;
 import br.com.patrimonio.pojo.Status;
 
@@ -156,12 +157,8 @@ public class DAOPatrimonios extends Conexao implements CRUD<Patrimonio> {
             if (abrir()) {
 
                 String sql =
-                        "SELECT id, numero_tombamento, nome, descricao, "
-                        + "curso_id, local_id, categoria_id, status, "
-                        + "valor_aquisicao, data_aquisicao, criado_por, "
-                        + "atualizado_por, criado_em, atualizado_em "
-                        + "FROM patrimonios";
-
+                        "SELECT * FROM patrimonios";
+  
                 pst =
                         con.prepareStatement(sql);
 
@@ -173,17 +170,9 @@ public class DAOPatrimonios extends Conexao implements CRUD<Patrimonio> {
                     Patrimonio patrimonio =
                             new Patrimonio();
 
-                    // -----------------------------------------
-                    // ID
-                    // -----------------------------------------
-
                     patrimonio.setId(
                             rs.getInt("id")
                     );
-
-                    // -----------------------------------------
-                    // NÚMERO DE TOMBAMENTO
-                    // -----------------------------------------
 
                     patrimonio.setNumero_tombamento(
                             rs.getString(
@@ -191,49 +180,27 @@ public class DAOPatrimonios extends Conexao implements CRUD<Patrimonio> {
                             )
                     );
 
-                    // -----------------------------------------
-                    // NOME
-                    // -----------------------------------------
-
                     patrimonio.setNome(
                             rs.getString("nome")
                     );
 
-                    // -----------------------------------------
-                    // DESCRIÇÃO
-                    // -----------------------------------------
 
                     patrimonio.setDescricao(
                             rs.getString("descricao")
                     );
 
-                    // -----------------------------------------
-                    // CURSO
-                    // -----------------------------------------
 
                     patrimonio.setCurso_id(
                             rs.getInt("curso_id")
                     );
 
-                    // -----------------------------------------
-                    // LOCAL
-                    // -----------------------------------------
-
                     patrimonio.setLocal_id(
                             rs.getInt("local_id")
                     );
 
-                    // -----------------------------------------
-                    // CATEGORIA
-                    // -----------------------------------------
-
                     patrimonio.setCategoria_id(
                             rs.getInt("categoria_id")
                     );
-
-                    // -----------------------------------------
-                    // STATUS
-                    // -----------------------------------------
 
                     String status =
                             rs.getString("status");
@@ -245,45 +212,24 @@ public class DAOPatrimonios extends Conexao implements CRUD<Patrimonio> {
                         );
                     }
 
-                    // -----------------------------------------
-                    // VALOR
-                    // -----------------------------------------
-
                     patrimonio.setValor_aquisicao(
                             rs.getDouble(
                                     "valor_aquisicao"
                             )
                     );
 
-                    // -----------------------------------------
-                    // DATA DE AQUISIÇÃO
-                    // -----------------------------------------
-
                     patrimonio.setData_aquisicao(
                             rs.getDate(
                                     "data_aquisicao"
                             )
                     );
-
-                    // -----------------------------------------
-                    // CRIADO POR
-                    // -----------------------------------------
-
-                    patrimonio.setCriado_por(
+                patrimonio.setCriado_por(
                             rs.getInt("criado_por")
                     );
-
-                    // -----------------------------------------
-                    // ATUALIZADO POR
-                    // -----------------------------------------
 
                     patrimonio.setAtualizado_por(
                             rs.getInt("atualizado_por")
                     );
-
-                    // -----------------------------------------
-                    // CRIADO EM
-                    // -----------------------------------------
 
                     patrimonio.setCriado_em(
                             rs.getTimestamp(
@@ -291,19 +237,11 @@ public class DAOPatrimonios extends Conexao implements CRUD<Patrimonio> {
                             )
                     );
 
-                    // -----------------------------------------
-                    // ATUALIZADO EM
-                    // -----------------------------------------
-
                     patrimonio.setAtualizado_em(
                             rs.getTimestamp(
                                     "atualizado_em"
                             )
                     );
-
-                    // -----------------------------------------
-                    // ADICIONA NA LISTA
-                    // -----------------------------------------
 
                     lista.add(
                             patrimonio
@@ -330,9 +268,118 @@ public class DAOPatrimonios extends Conexao implements CRUD<Patrimonio> {
     // =========================================================
 
     @Override
-    public Patrimonio listarID(Integer ID) {
+    public Patrimonio listarID(Integer id) {
 
-        // Ainda não implementado
-        return null;
+		Patrimonio lista = new Patrimonio();
+
+        try {
+
+            if (abrir()) {
+
+                String sql =
+                        "SELECT * FROM patrimonios WHERE id="+id;
+                        
+
+                pst =
+                        con.prepareStatement(sql);
+
+                ResultSet rs =
+                        pst.executeQuery();
+
+                while (rs.next()) {
+
+                    Patrimonio patrimonio =
+                            new Patrimonio();
+
+                    patrimonio.setId(
+                            rs.getInt("id")
+                    );
+
+                    patrimonio.setNumero_tombamento(
+                            rs.getString(
+                                    "numero_tombamento"
+                            )
+                    );
+
+                    patrimonio.setNome(
+                            rs.getString("nome")
+                    );
+
+
+                    patrimonio.setDescricao(
+                            rs.getString("descricao")
+                    );
+
+
+                    patrimonio.setCurso_id(
+                            rs.getInt("curso_id")
+                    );
+
+                    patrimonio.setLocal_id(
+                            rs.getInt("local_id")
+                    );
+
+                    patrimonio.setCategoria_id(
+                            rs.getInt("categoria_id")
+                    );
+
+                    String status =
+                            rs.getString("status");
+
+                    if (status != null) {
+
+                        patrimonio.setStatus(
+                                Status.valueOf(status)
+                        );
+                    }
+
+                    patrimonio.setValor_aquisicao(
+                            rs.getDouble(
+                                    "valor_aquisicao"
+                            )
+                    );
+
+                    patrimonio.setData_aquisicao(
+                            rs.getDate(
+                                    "data_aquisicao"
+                            )
+                    );
+                patrimonio.setCriado_por(
+                            rs.getInt("criado_por")
+                    );
+
+                    patrimonio.setAtualizado_por(
+                            rs.getInt("atualizado_por")
+                    );
+
+                    patrimonio.setCriado_em(
+                            rs.getTimestamp(
+                                    "criado_em"
+                            )
+                    );
+
+                    patrimonio.setAtualizado_em(
+                            rs.getTimestamp(
+                                    "atualizado_em"
+                            )
+                    );
+
+                    lista = patrimonio;
+                         
+                }
+
+                rs.close();
+            }
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+        // IMPORTANTE:
+        // Nunca retorna null.
+        // Se não houver registros, retorna uma lista vazia.
+
+        return lista;
     }
 }

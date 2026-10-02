@@ -325,6 +325,16 @@ public class TelaPrincipal extends JFrame {
 
 		JMenuItem itemLstUsuario =
 				new JMenuItem("Usuário");
+		itemLstUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ListarUsuarios formListarUsuarios =
+						new ListarUsuarios();
+
+				formListarUsuarios.setVisible(true);
+				
+			}
+		});
 
 		itemListarTudo.add(itemLstUsuario);
 
@@ -333,16 +343,79 @@ public class TelaPrincipal extends JFrame {
 		itemLstCursos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				new ListarCursos().setVisible(true);
+				ListarCursos formListarCursos =
+						new ListarCursos();
+
+				formListarCursos.setVisible(true);
 			}
 		});
 
 		itemListarTudo.add(itemLstCursos);
+		
+		JMenuItem itemLstCategorias = new JMenuItem("Categorias");
+		itemLstCategorias.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				ListarCategorias formListarCategorias =
+						new ListarCategorias();
+
+				formListarCategorias.setVisible(true);
+			}
+		});
+		itemListarTudo.add(itemLstCategorias);
+		
+		JMenuItem itemLstLocais = new JMenuItem("Locais");
+		itemLstLocais.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				ListarLocais formListarLocais =
+						new ListarLocais();
+
+				formListarLocais.setVisible(true);
+			}
+		});
+		itemListarTudo.add(itemLstLocais);
 
 		JMenuItem itemLstPatrimonio =
 				new JMenuItem("Patrimônio");
+		itemLstPatrimonio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				ListarPatrimonios formListarPatrimonios =
+						new ListarPatrimonios();
+
+				formListarPatrimonios.setVisible(true);
+			}
+		});
 
 		itemListarTudo.add(itemLstPatrimonio);
+		
+		JMenuItem item = new JMenuItem("Movimentações");
+		item.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ListarMovimentacoes formListarMovimentacoes =
+						new ListarMovimentacoes();
+
+				formListarMovimentacoes.setVisible(true);
+			}
+		});
+		itemListarTudo.add(item);
+		
+		JMenuItem itemLstBaixas = new JMenuItem("Baixas Patrimôniais");
+		itemLstBaixas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				ListarBaixas formListarBaixas =
+						new ListarBaixas();
+
+				formListarBaixas.setVisible(true);
+			}
+		});
+		itemListarTudo.add(itemLstBaixas);
 
 		// ==========================================================
 		// PESQUISAR POR ID

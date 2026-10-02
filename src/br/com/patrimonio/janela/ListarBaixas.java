@@ -2,6 +2,8 @@ package br.com.patrimonio.janela;
 
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -16,11 +18,9 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import br.com.patrimonio.dao.DAOCurso;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import br.com.patrimonio.dao.DAOBaixas;
 
-public class ListarCursos extends JFrame {
+public class ListarBaixas extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -35,7 +35,7 @@ public class ListarCursos extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListarCursos frame = new ListarCursos();
+					ListarBaixas frame = new ListarBaixas();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,9 +47,9 @@ public class ListarCursos extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ListarCursos() {
+	public ListarBaixas() {
 		setResizable(false);
-		setTitle("SURVEY_PROGRAM_LISTAR_CURSOS");
+		setTitle("SURVEY_PROGRAM_LISTAR_BAIXAS");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 870, 563);
 		contentPane = new JPanel();
@@ -59,12 +59,12 @@ public class ListarCursos extends JFrame {
 		
 		
 		
-		JLabel lblNewLabel = new JLabel("Listar Cursos");
+		JLabel lblNewLabel = new JLabel("Listar Baixas");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
 		lblNewLabel.setBounds(10, 11, 180, 48);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lbllbl = new JLabel("Digite o código do curso:");
+		JLabel lbllbl = new JLabel("Digite o código da Baixa:");
 		lbllbl.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lbllbl.setBounds(10, 110, 167, 19);
 		contentPane.add(lbllbl);
@@ -86,10 +86,10 @@ public class ListarCursos extends JFrame {
 				//AQUI AQUI AQUI
 				String cx = txtIdCurso.getText();
 				if(cx.equals("") || cx==null) {
-					carregarCursos(0);
+					carregarBaixas(0);
 				}
 				else {
-					carregarCursos(Integer.parseInt(cx));
+					carregarBaixas(Integer.parseInt(cx));
 				}
 				
 			}
@@ -98,19 +98,19 @@ public class ListarCursos extends JFrame {
 		btnRealizarBusca.setBounds(580, 110, 41, 29);
 		contentPane.add(btnRealizarBusca);
 			
-		carregarCursos(0);
+		carregarBaixas(0);
 		
 		
 	}
 	
-	public void carregarCursos(Integer id) {
+	public void carregarBaixas(Integer id) {
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 140, 834, 358);
 		contentPane.add(scrollPane);
 		
 		//Montar o cabeçalho da tabela
-		String colunas[] = {"Id","Nome do Curso","Sigla do Curso","Criado Por","Criado Em"};
+		String colunas[] = {"Id","Patrimonio","Registro de Usuario","Tipo de baixa","Motivo","Valor recuperado","Documento Comprobatório","Data da baixa"};
 		
 		//Vamos criar um modelo de dados para apresentar as colunas e os dados do banco
 		//de dadaos na nossa JTable. O Modelo de dados organiza as informações que serão apresentadas
@@ -119,23 +119,28 @@ public class ListarCursos extends JFrame {
 		
 		
 		//Instância da classe DAOCurso
-		DAOCurso dc = new DAOCurso();
+		DAOBaixas dc = new DAOBaixas();
 		//Receber a lista de todos os cursos do banco de dados em uma lista
 		
-		List<br.com.patrimonio.pojo.Cursos> lc;
-		br.com.patrimonio.pojo.Cursos cs;
+		List<br.com.patrimonio.pojo.Baixas> lc;
+		br.com.patrimonio.pojo.Baixas cs;
 		
 		
 		if( id == 0) {
 			lc = dc.listar();
 			
-			for(br.com.patrimonio.pojo.Cursos cr : lc) {
+			for(br.com.patrimonio.pojo.Baixas cr : lc) {
 				Object[] dados = {
-						cr.getId(),
-						cr.getNome(),
-						cr.getSigla(),
-						cr.getCriado_por(),
-						cr.getCriado_em()
+						cr.getId(),						
+						cr.getPatrimonio_id(),
+						cr.getUsuario_registro_id(),
+						
+						cr.getTipo_baixa(),
+						
+						cr.getMotivo(),
+						cr.getValor_recuperado(),
+						cr.getDocumento_comprobatorio(),
+						cr.getData_baixa()
 						
 				};
 				model.addRow(dados);
@@ -146,11 +151,17 @@ public class ListarCursos extends JFrame {
 			cs = dc.listarID(id);
 			
 			Object[] dados = {
-					cs.getId(),
-					cs.getNome(),
-					cs.getSigla(),
-					cs.getCriado_por(),
-					cs.getCriado_em()
+					cs.getId(),						
+					cs.getPatrimonio_id(),
+					cs.getUsuario_registro_id(),
+					
+					cs.getTipo_baixa(),
+					
+					cs.getMotivo(),
+					cs.getValor_recuperado(),
+					cs.getDocumento_comprobatorio(),
+					cs.getData_baixa()
+			
 			};
 			model.addRow(dados);
 		}
